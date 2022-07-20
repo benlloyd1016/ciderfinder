@@ -1,13 +1,62 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Search
+    Ciders
 {% endblock %}
 
 {% block main %}
 <div class="container-lg p-0 flex-grow-1" style="max-width: 1140px;">
     <div class="bg-white p-3 rounded shadow-sm">
-        <h1 style="font-size: 2rem;">Search</h1>
+        <h1 style="font-size: 2rem;">Ciders</h1>
+        <input type="text" id="myInput" onkeyup="filtertable()" placeholder="Search ciders" title="Type in a search query like apple varietal, year, or location">
+        <div class="table-responsive">
+            <table class="table" id="myTable">
+                <tbody>
+                    <tr>
+                        <th style="width:50%">Name</th>
+                        <th style="width:50%">Description</th>
+                    </tr>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row["name"] }}</td>
+                        <td class="text-end">{{ row["description"] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<script>
+function filtertable() {                                                // Filters the table based what is typed in the input box
+    var input, filter, table, tr, td, i, hasData, j, txtValue;
+
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {                                   // For all rows:
+        hasData = 0;                                                    // For the current row, a variable will be initialized at 0 and changed to 1 if any of the columns are found to have data
+        
+        for (j = 0; j < 2; j++) {                                       // For all columns in the row (use j<x, where x=number of columns):
+            td = tr[i].getElementsByTagName("td")[j];                   // Identify the cell
+    
+            if (td) {                                                   // If the cell has data,
+                txtValue = td.textContent || td.innerText;              
+                
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {      // If the cell has data that matches the search, display the row
+                    tr[i].style.display = "";                           
+                    hasData = 1;
+                }
+            } 
+        }
+
+        if (hasData == 0) {                                              // If no cells in the row had data that matched the search, hide the row
+            tr[i].style.display = "none";                                
+        }
+    }
+}
+</script>
 {% endblock %}
