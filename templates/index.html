@@ -13,13 +13,15 @@
             <table class="table" id="myTable">
                 <tbody>
                     <tr>
-                        <th style="width:50%">Name</th>
-                        <th style="width:50%">Description</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
                     </tr>
                     {% for row in rows %}
                     <tr>
                         <td>{{ row["name"] }}</td>
-                        <td class="text-end">{{ row["description"] }}</td>
+                        <td>{{ row["price"] }}</td>
+                        <td>{{ row["description"] }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -40,7 +42,7 @@ function filtertable() {                                                // Filte
     for (i = 0; i < tr.length; i++) {                                   // For all rows:
         hasData = 0;                                                    // For the current row, a variable will be initialized at 0 and changed to 1 if any of the columns are found to have data
         
-        for (j = 0; j < 2; j++) {                                       // For all columns in the row (use j<x, where x=number of columns):
+        for (j = 0; j < 3; j++) {                                       // For all columns in the row (use j<x, where x=number of columns):
             td = tr[i].getElementsByTagName("td")[j];                   // Identify the cell
     
             if (td) {                                                   // If the cell has data,

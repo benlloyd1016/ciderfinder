@@ -31,19 +31,31 @@ def scraper():
             link = product.find("a").get('href')
             productlinks.append(baseurl + link)
 
-    # Accesses each link in the list and pulls the cider name and description, assembling them into a dictionary
+    # Accesses each link in the list, pulls the cider name and description, and updates the database
     for link in productlinks:
         f = requests.get(link,headers=headers).text
         hun=BeautifulSoup(f,'html.parser')
 
-        try:
-            description=hun.find("div",{"class":"product-description"}).text.replace('\t',"").replace('\n',"")
-        except:
-            description=None
-
+        # Gets name
         try:
             name=hun.find("h2").text.replace('\n',"")
         except:
             name=None
 
-        db.execute("INSERT INTO ciders (name, description) VALUES(?, ?)", name, description)
+        # Gets price
+        try:
+            price=hun.find("div",{"class":"hero-3 product-price"}).text.replace('\t',"").replace('\n',"")
+        except:
+            price=None
+
+        # Gets description
+        try:
+            description=hun.find("div",{"class":"product-description"}).text.replace('\t',"").replace('\n',"")
+        except:
+            description=None
+
+        # Checks if this link is already in the database. If so, it updates the existing data. If not, it creates a new row.
+        if db.execute("SELECT COUNT(link) FROM ciders WHERE link = ?", link)[0]['COUNT(link)'] == 0:
+            db.execute("INSERT INTO ciders (link, name, price, description) VALUES(?, ?, ?, ?)", link, name, price, description)
+        else:
+            db.execute("UPDATE ciders SET name = ?, price = ?, description = ? WHERE link = ?", name, price, description, link)
