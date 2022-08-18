@@ -8,7 +8,7 @@ db = SQL("sqlite:///ciders.db")
 
 @app.route("/")
 def index():
-    scraper() # Remove the hash symbol when I want to rerun the scrape
+    #scraper() # Remove the hash symbol when I want to rerun the scrape
     rows = db.execute("SELECT name, price, description FROM ciders")
     return render_template("index.html", rows=rows)
 

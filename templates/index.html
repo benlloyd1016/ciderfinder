@@ -13,9 +13,9 @@
             <table class="table" id="myTable">
                 <tbody>
                     <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Description</th>
+                        <th width="20%">Name</th>
+                        <th width="10%">Price</th>
+                        <th width="70%">Description</th>
                     </tr>
                     {% for row in rows %}
                     <tr>
@@ -39,7 +39,7 @@ function filtertable() {                                                // Filte
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
 
-    for (i = 0; i < tr.length; i++) {                                   // For all rows:
+    for (i = 1; i < tr.length; i++) {                                   // For all rows:
         hasData = 0;                                                    // For the current row, a variable will be initialized at 0 and changed to 1 if any of the columns are found to have data
         
         for (j = 0; j < 3; j++) {                                       // For all columns in the row (use j<x, where x=number of columns):
